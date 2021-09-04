@@ -1,21 +1,48 @@
 // Use Express
-var express = require("express");
-// Use body-parser
-var bodyParser = require("body-parser");
+const express = require("express"),
+    app = express(),
+    mysql = require("mysql"),
+    cors = require("cors"),
+    router = express.Router(),
+    jwt = require('jsonwebtoken'),
+    expressjwt = require('express-jwt');
 
-// Create new instance of the express server
-var app = express();
 
-// Define the JSON parser as a default way 
-// to consume and produce data through the 
-// exposed APIs
-app.use(bodyParser.json());
+mysqlConfig = {
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'ez_blog_dev'
+};
+
+// Connections pool for DB
+dbPool = mysql.createPool(mysqlConfig);
 
 // Create link to Angular build directory
 // The `ng build` command will save the result
 // under the `dist` folder.
 var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
+
+// embedding required subcontrollers files
+const usersCtrl = require('./ctrl/users.js');
+const pagesCtrl = require('./ctrl/pages.js');
+const mediaCtrl = require('./ctrl/media.js');
+const postsCtrl = require('./ctrl/posts.js');
+const settingsCtrl = require('./ctrl/settings.js');
+
+//enable CORS and json parsing
+app.use(cors());
+app.options('*', cors());
+app.use(express.json());
+
+//initialize routes
+app.use("/users", usersCtrl);
+app.use("/pages", pagesCtrl);
+app.use("/media", mediaCtrl);
+app.use("/posts", postsCtrl);
+app.use("/settings", settingsCtrl);
+
 
 // Init the server
 app.listen(8085, function () {

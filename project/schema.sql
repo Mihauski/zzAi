@@ -41,8 +41,8 @@ CREATE TABLE `posts` (
 CREATE TABLE `media` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`addedBy` INT NOT NULL,
-	`path` varchar(1024) NOT NULL UNIQUE,
-	`filename` varchar(1024) NOT NULL UNIQUE,
+	`path` varchar(512) NOT NULL UNIQUE,
+	`filename` varchar(512) NOT NULL UNIQUE,
 	PRIMARY KEY (`id`)
 );
 
